@@ -4,12 +4,12 @@
   run_once: true
   vars:
     mofed_site_place: "MLNX_OFED-4.6-1.0.1.1"
-    mofed_file_name: "MLNX_OFED_LINUX-4.6-1.0.1.1-ubuntu16.04-x86_64.iso"
+    mofed_file_name: "MLNX_OFED_LINUX-4.6-1.0.1.1-ubuntu18.04-x86_64.iso"
   tags:
     - mellanox_ofed
 
 # Activate VF for relevant PF
-- hosts: all
+- hosts: kube-node
   become: true
   become_method: sudo
   tasks:
@@ -34,6 +34,10 @@
         - "{{ pf2 }}"
         - "{{ pf3 }}"
         - "{{ pf4 }}"
+        - "{{ pf5 }}"
+        - "{{ pf6 }}"
+        - "{{ pf7 }}"
+        - "{{ pf8 }}"
       when: ofed_present.stat.exists
   tags:
     - vf_activation
@@ -115,6 +119,42 @@
           - "{{ dev_id }}"
           pfNames:
           - "{{ pf4 }}"
+      - resourceName: sriov_115
+        isRdma: true
+        selectors:
+          vendors:
+          - 15b3
+          devices:
+          - "{{ dev_id }}"
+          pfNames:
+          - "{{ pf5 }}"
+      - resourceName: sriov_116
+        isRdma: true
+        selectors:
+          vendors:
+          - 15b3
+          devices:
+          - "{{ dev_id }}"
+          pfNames:
+          - "{{ pf6 }}"
+      - resourceName: sriov_117
+        isRdma: true
+        selectors:
+          vendors:
+          - 15b3
+          devices:
+          - "{{ dev_id }}"
+          pfNames:
+          - "{{ pf7 }}"
+      - resourceName: sriov_118
+        isRdma: true
+        selectors:
+          vendors:
+          - 15b3
+          devices:
+          - "{{ dev_id }}"
+          pfNames:
+          - "{{ pf8 }}"
   tags:
     - k8s_sriov_device_plugin
 
@@ -132,10 +172,14 @@
     - include_tasks: nad4roce.yaml
       name: Add NAD
       with_items:
-        - { network_name: sriov111, res_name: intel.com/sriov_111, vlan_id: 111 }
-        - { network_name: sriov112, res_name: intel.com/sriov_112, vlan_id: 112 }
-        - { network_name: sriov113, res_name: intel.com/sriov_113, vlan_id: 113 }
-        - { network_name: sriov114, res_name: intel.com/sriov_114, vlan_id: 114 }
+        - { network_name: sriov111, res_name: intel.com/sriov_111, vlan_id: 3001 }
+        - { network_name: sriov112, res_name: intel.com/sriov_112, vlan_id: 3002 }
+        - { network_name: sriov113, res_name: intel.com/sriov_113, vlan_id: 3003 }
+        - { network_name: sriov114, res_name: intel.com/sriov_114, vlan_id: 3004 }
+        - { network_name: sriov115, res_name: intel.com/sriov_115, vlan_id: 3005 }
+        - { network_name: sriov116, res_name: intel.com/sriov_116, vlan_id: 3006 }
+        - { network_name: sriov117, res_name: intel.com/sriov_117, vlan_id: 3007 }
+        - { network_name: sriov118, res_name: intel.com/sriov_118, vlan_id: 3008 }
   tags:
     - k8s_mlnx_network_definition
 

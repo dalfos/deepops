@@ -12,7 +12,7 @@
 
 - name: VF activation
   shell: |
-    echo 8 > /sys/class/net/{{ item }}/device/sriov_numvfs
-    sed -i '/^exit 0*/i echo 8 > /sys/class/net/{{ item }}/device/sriov_numvfs' /etc/rc.local
+    echo 16 > /sys/class/net/{{ item }}/device/sriov_numvfs
+    sed -i '/^exit 0*/i echo 16 > /sys/class/net/{{ item }}/device/sriov_numvfs' /etc/rc.local
   when: result.rc > 0
 

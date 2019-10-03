@@ -109,7 +109,7 @@
     # Setting reference: https://docs.nvidia.com/deeplearning/dgx/user-guide/index.html
     docker_daemon_json:
       bip: 192.168.99.1/24
-      default-shm-size: 1G
+      #default-shm-size: 1G
       default-ulimits:
         memlock:
           name: memlock
@@ -191,11 +191,15 @@
 - name: Add Mellanox RoCE backend
   import_playbook: roce/roce.yaml
   vars:
-    pf1: ens9f0
-    pf2: ens10f0
-    pf3: ens11f0
-    pf4: ens12f0
-    dev_id: 101c
+    pf1: enp53s0
+    pf2: enp58s0
+    pf3: enp184s0
+    pf4: enp189s0
+    pf5: enp88s0
+    pf6: enp93s0
+    pf7: enp225s0
+    pf8: enp230s0
+    dev_id: "1018"
   when: roce_backend
   tags:
     - roce
